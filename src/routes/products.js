@@ -10,8 +10,10 @@ productsRouter.get('/',async(req,res)=>{
     })
     
     productsRouter.get('/:pid',async(req,res)=>{
-    let productos= await producto.readProducts();
-    productos.find(prod=>prod.id==req.params.pid)?res.send(productos.filter(prod=>prod.id==req.params.pid)):res.send('no se encontro el producto')
+        let productoId= await producto.getProductById(req.params.pid)
+        productoId?res.send(productoId):res.send('no se encontro el producto')
+/*     let productos= await producto.readProducts();
+    productos.find(prod=>prod.id==req.params.pid)?res.send(productos.filter(prod=>prod.id==req.params.pid)):res.send('no se encontro el producto') */
     })
 
 // POST

@@ -62,14 +62,16 @@ async readProducts (){
     }
 
 // Busco en el array de productos si hay un producto con esa id y lo devuelvo o sino Not Found
-  async  getProductById(id){
+async  getProductById(id){
     let producto = await this.readProducts()
     let productoEncontrado = producto.find(elem=>elem.id == id)
        if (productoEncontrado){
         console.log("\n --------------El producto encontrado es :------------");
         console.log(productoEncontrado);
+        return productoEncontrado
        }else{
         console.log("not Found");
+        return undefined
        }
     }  
 
