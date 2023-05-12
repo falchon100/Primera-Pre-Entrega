@@ -34,12 +34,15 @@ async readProducts (){
             if (producto.length==0){
                 this.products.push(nuevoProducto)
                 await fs.promises.writeFile(this.path,JSON.stringify(this.products))
+                this.idNumber=[]
             }else{
                 if (producto.find(ele=>ele.code==code)){
                 console.log(`\n No se pudo agrega el producto,ya que el codigo "${code}" ya ha sido ingresado`)}
                 else{
                     producto.push(nuevoProducto)
+                    console.log(producto);
                     await fs.promises.writeFile(this.path,JSON.stringify(producto))
+                    this.idNumber=[]
                 }
             }
         }
@@ -82,9 +85,13 @@ async  getProductById(id){
     if (indice !== -1){
         productOld[indice].title = producto.title
         productOld[indice].description = producto.description
-        productOld[indice].price = producto.price
         productOld[indice].code = producto.code
+        productOld[indice].price = producto.price
+        productOld[indice].status = producto.status
         productOld[indice].stock = producto.stock
+        productOld[indice].category = producto.category
+        productOld[indice].thumbnails=producto.thumbnails
+
     }
     await fs.promises.writeFile(this.path, JSON.stringify(productOld))
     return console.log(`Producto actualizado`);

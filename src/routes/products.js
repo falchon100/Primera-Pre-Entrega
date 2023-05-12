@@ -12,8 +12,6 @@ productsRouter.get('/',async(req,res)=>{
     productsRouter.get('/:pid',async(req,res)=>{
         let productoId= await producto.getProductById(req.params.pid)
         productoId?res.send(productoId):res.send('no se encontro el producto')
-/*     let productos= await producto.readProducts();
-    productos.find(prod=>prod.id==req.params.pid)?res.send(productos.filter(prod=>prod.id==req.params.pid)):res.send('no se encontro el producto') */
     })
 
 // POST
@@ -34,9 +32,9 @@ productsRouter.get('/',async(req,res)=>{
 
 // DELETE 
 productsRouter.delete('/',async(req,res)=>{
-    let idProduct =req.body.id;
-producto.deleteProduct(idProduct)
-res.send({status:'exitoso',payload:idProduct})
+    let id =req.body.id;
+producto.deleteProduct(id)
+res.send({status:'exitoso',payload:`se ha eliminado el id ${id}`})
 })
 
 // PUTT
@@ -45,7 +43,7 @@ productsRouter.put('/',async(req,res)=>{
     let id= req.body.id;
 
  producto.updateProduct(id,productoo)
- res.send({status:'exitoso',payload:id})
+ res.send({status:'Producto Actualizado',payload:id})
 })
 
 
