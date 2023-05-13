@@ -13,28 +13,6 @@ app.use('/api/carts',cartsRouter)
 app.listen(port,()=>console.log('creando servidor'))
 
 
-
-
-
-
-
-
-
-
-
-// DELETE 
-app.delete('/products',async(req,res)=>{
-    let idProduct =req.body.id;
-producto.deleteProduct(idProduct)
-res.send({status:'exitoso',payload:idProduct})
+app.get('/',(req,res)=>{
+    res.send('Bienvenido!💻')
 })
-// PUTT
-app.put('/products',async(req,res)=>{
-    let productoo = req.body;
-    let id= req.body.id;
-
- producto.updateProduct(id,productoo)
- res.send({status:'exitoso',payload:id})
-})
-
-

@@ -16,25 +16,17 @@ productsRouter.get('/',async(req,res)=>{
 
 // POST
     productsRouter.post('/',async (req,res)=>{
-        try {
-            let {title,description,code,price,status,stock,category,thumbnails} = req.body;
-            if (!title||!description||!code||!price||!status||!stock||!category){
-    res.status(400).send({status:'error',error:'falta parametro'})
-            }
-         producto.addProduct(title,description,code,price,status,stock,category,thumbnails) 
-        res.send({status:'exitoso',payload:title})
-        } catch (error) {
-            console.log(error);
-        }
-    
-    })
+        let {title,description,code,price,stock,category,thumbnails} = req.body;
+    res.send(await producto.addProduct(title,description,code,price,stock,category,thumbnails)) 
+}
+)
 
 
 // DELETE 
 productsRouter.delete('/',async(req,res)=>{
     let id =req.body.id;
 producto.deleteProduct(id)
-res.send({status:'exitoso',payload:`se ha eliminado el id ${id}`})
+res.send({status:'exitoso',payload:`se ha eliminado el id numero ${id} `})
 })
 
 // PUTT

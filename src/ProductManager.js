@@ -14,9 +14,10 @@ async readProducts (){
 
 
 // metodo para agregar productos y validacion si es que el codigo ya esta ingresado
-    async addProduct(title,description,code,price,status,stock,category,thumbnails){
-        if (!title||!description||!code||!price||!status||!stock||!category){
-        console.log('\n No se pudo agregar el producto. Debera completar todos los campos')}
+    async addProduct(title,description,code,price,stock,category,thumbnails){
+        if (!title||!description||!code||!price||!stock||!category){
+        return 'Debe colocar todos los campos';
+        }
         else{
             let nuevoProducto = {
                 id:await this.idGenerator(),
@@ -24,7 +25,7 @@ async readProducts (){
                 description,
                 code,
                 price,
-                status,
+                status:true,
                 stock,
                 category,
                 thumbnails,
@@ -35,14 +36,16 @@ async readProducts (){
                 this.products.push(nuevoProducto)
                 await fs.promises.writeFile(this.path,JSON.stringify(this.products))
                 this.idNumber=[]
+                return'Se agrego correctamente su producto'
             }else{
                 if (producto.find(ele=>ele.code==code)){
-                console.log(`\n No se pudo agrega el producto,ya que el codigo "${code}" ya ha sido ingresado`)}
+           return `\n No se pudo agrega el producto,ya que el codigo "${code}" ya ha sido ingresado`}
                 else{
                     producto.push(nuevoProducto)
                     console.log(producto);
                     await fs.promises.writeFile(this.path,JSON.stringify(producto))
                     this.idNumber=[]
+                    return'Se agrego correctamente su producto'
                 }
             }
         }
@@ -112,36 +115,3 @@ async  getProductById(id){
    await fs.promises.writeFile(this.path,JSON.stringify(productoEncontrado))
     }
 }
-
-//Se creará una instancia de la clase “ProductManager”
-let producto= new ProductManager()
-
-//Se llamará “getProducts” recién creada la instancia, debe devolver un arreglo vacío []
-    /* producto.getProducts() */
-   /*  producto.addProduct('Capuchino',"Italiano",400,500,true,2,"bebida","./Capuchino"); */
-/*      producto.addProduct('Cafe',"Cafe expreso",200,"./Cafe","coffe",10);
-     producto.addProduct('Capuchino',"Capuchino Italiano",400,"./Capuchino","Capu",5);
-     producto.addProduct('Te',"Te Caliente",250,"./Te","Tecito",30);
-     producto.addProduct('Submarino',"Con chocolate",500,"./Sub","Subma",5);
-     producto.addProduct('Latte',"con canela",600,"./Latte","Late",7);
-     producto.addProduct('Frapuchino',"con Helado",600,"./frapu","Frap",4);
-     producto.addProduct('Lagrima',"Poco cafe",400,"./lagrima","lagri",6); 
-     producto.addProduct('Moca',"Moca Blanco",500,"./Moca","Moca",3);
-     producto.addProduct('Doble expresso',"Doble",400,"./expresso","doblee",10);
-     producto.addProduct('Americano',"Americano",300,"./Americano","americ",5); 
-    /* producto.getProducts() */
-    
-  /*   producto.getProductById(2) */
-
-  /*   producto.updateProduct(2,{
-    title: 'tres',
-    description: 'tres',
-    price: 3,
-    thumbnail: 'tres',
-    code: 'tres',
-    stock: 3
-  }) 
- */
-    /* producto.deleteProduct(1) */
-
-  
