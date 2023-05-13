@@ -16,7 +16,7 @@ async readProducts (){
 // metodo para agregar productos y validacion si es que el codigo ya esta ingresado
     async addProduct(title,description,code,price,stock,category,thumbnails){
         if (!title||!description||!code||!price||!stock||!category){
-        return 'Debe colocar todos los campos';
+        return {status:'Denegado',msg:'Debe colocar todos los campos'} ;
         }
         else{
             let nuevoProducto = {
@@ -76,8 +76,7 @@ async  getProductById(id){
         console.log(productoEncontrado);
         return productoEncontrado
        }else{
-        console.log("not Found");
-        return undefined
+       return {status: "No se encontro el producto"};
        }
     }  
 
@@ -94,24 +93,27 @@ async  getProductById(id){
         productOld[indice].stock = producto.stock
         productOld[indice].category = producto.category
         productOld[indice].thumbnails=producto.thumbnails
-
-    }
     await fs.promises.writeFile(this.path, JSON.stringify(productOld))
-    return console.log(`Producto actualizado`);
+    return {status:'producto actualizado'};
+    }else{
+        return 'no existe'
+    }
     }
 
    async deleteProduct(id){
     //Leo el archivo y el objeto lo guardo en productoEncontrado
-    let producto2= await fs.promises.readFile(this.path,"utf-8")
-    let productoEncontrado = JSON.parse(producto2)
+    let producto= await fs.promises.readFile(this.path,"utf-8")
+    let productoEncontrados = JSON.parse(producto)
     //recorro el array de productos y si encuentro uno con el mismo id , lo borro y muestro el indice que borre
-    productoEncontrado.forEach((elemento,index)=>{
+    productoEncontrados.forEach((elemento,index)=>{
         if(elemento.id==id){
-            productoEncontrado.splice(index,1)
-            console.log(`se elimino el id "${id}" de la lista`);
+            productoEncontrados.splice(index,1)
+        }else{
+            return{status:'Negado',payload:`no se ha encontrado`}
         }
      })
      //Envio el array de productos actualizados al archivo
-   await fs.promises.writeFile(this.path,JSON.stringify(productoEncontrado))
-    }
+   await fs.promises.writeFile(this.path,JSON.stringify(productoEncontrados))
+   return {status :'exitoso'}
+}
 }

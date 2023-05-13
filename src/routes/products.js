@@ -10,8 +10,8 @@ productsRouter.get('/',async(req,res)=>{
     })
     
     productsRouter.get('/:pid',async(req,res)=>{
-        let productoId= await producto.getProductById(req.params.pid)
-        productoId?res.send(productoId):res.send('no se encontro el producto')
+        let id=req.params.pid
+        res.send(await producto.getProductById(id))
     })
 
 // POST
@@ -25,21 +25,19 @@ productsRouter.get('/',async(req,res)=>{
 // DELETE 
 productsRouter.delete('/',async(req,res)=>{
     let id =req.body.id;
-producto.deleteProduct(id)
-res.send({status:'exitoso',payload:`se ha eliminado el id numero ${id} `})
+/* producto.deleteProduct(id) */
+res.send(await producto.deleteProduct(id))
 })
 
 // PUTT
 productsRouter.put('/',async(req,res)=>{
     let productoo = req.body;
     let id= req.body.id;
-
- producto.updateProduct(id,productoo)
- res.send({status:'Producto Actualizado',payload:id})
+ res.send(await producto.updateProduct(id,productoo))
 })
 
 
-
+//inicializo la instancia producto
 let producto= new ProductManager()
 
 export default productsRouter;
