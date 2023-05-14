@@ -20,7 +20,6 @@ cartsRouter.get('/:cid',async(req,res)=>{
 //POST
 cartsRouter.post('/',async(req,res)=>{
    res.send(await cart.addCarts())
-   console.log('exitoso');
 })
 
 cartsRouter.post('/:cid/product/:pid', async (req,res)=>{
