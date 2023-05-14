@@ -3,10 +3,6 @@ import ProductManager from './ProductManager.js';
 
 const productAll = new ProductManager;
 
-/* addProductInCart = async ()=>{
-
-} */
-
 
 
 export default class CartManager{
@@ -51,11 +47,11 @@ export default class CartManager{
     async addProductToCart(cid,pid){
 
     //VERIFICO SI EXISTE EL PRODUCTO
-        let producto =await  productAll.readProducts()
+/*         let producto =await  productAll.readProducts()
         let indiceProd = producto.findIndex(prod=>prod.id==pid)
         if (indiceProd==-1){
             return {status:'no existe ese producto'}
-        }
+        } */
 
         //VERIFICO SI EXISTE EL CARRITO
     let carritos = await this.readCarts()
@@ -64,18 +60,25 @@ export default class CartManager{
     if (index ==-1){
       return {status:'no existe ese carrito'}
 
-
-        console.log('hasta aca perfecto');
-
-    let producto =await  productAll.readProducts()
-    let indiceProd = producto.findIndex(prod=>prod.id==pid)
-    console.log(`aca${indiceProd}` );
+    //carritos[index]= { id: 1684079870754, products: [], quantity: 0 }
+    
     }else{
- 
-        carritos[index].products=pid
+        console.log(carritos[index].products.length== 0);
+    if(carritos[index].products.length== 0){
+    carritos[index].products= pid;
+    carritos[index].quantity= 1
+    await fs.promises.writeFile(this.path,JSON.stringify(carritos))  
+    }else{
+        
+        console.log('entra aca');
+        carritos[index].quantity++  
+        await fs.promises.writeFile(this.path,JSON.stringify(carritos))  
+    }
+    console.log(carritos[index]);
+      /*   carritos[index].products=pid
         console.log(carritos[index].products)
         carritos[index].quantity++
-       ;
+       ; */
 /*         carritos[index].products?console.log('si'):console.log('no');
         carritos[index].products=pid;
         carritos[index].quantity++
