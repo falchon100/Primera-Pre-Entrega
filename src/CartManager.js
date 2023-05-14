@@ -13,7 +13,7 @@ export default class CartManager{
     let cart= await this.readCarts() 
     let nuevoCarrito ={
         id:this.generarId(),
-        carts:[]
+        product:[]
     }
     cart.push(nuevoCarrito)
         await fs.promises.writeFile(this.path,JSON.stringify(cart))  
@@ -25,6 +25,17 @@ export default class CartManager{
         let cart= await fs.promises.readFile(this.path,"utf-8")
         return JSON.parse(cart)
     }
+
+
+    async  getCartById(id){
+        let cart = await this.readCarts()
+        let cartEncontrado = cart.find(elem=>elem.id == id)
+           if (cartEncontrado){
+            return {status: "Exitoso", cartEncontrado};
+           }else{
+           return {status: "No se encontro el producto"};
+           }
+        }  
 
 
 }

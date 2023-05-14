@@ -9,7 +9,11 @@ import CartManager from '../CartManager.js';
  //GETS
 cartsRouter.get('/',async(req,res)=>{
 res.send(await cart.readCarts())
+})
 
+cartsRouter.get('/:cid',async(req,res)=>{
+   let id = req.params.cid
+   res.send(await cart.getCartById(id))
 })
 
 
