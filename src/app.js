@@ -16,3 +16,4 @@ app.listen(port,()=>console.log('creando servidor'))
 app.get('/',(req,res)=>{
     res.send('Bienvenido!💻')
 })
+

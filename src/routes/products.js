@@ -18,6 +18,7 @@ productsRouter.get('/',async(req,res)=>{
     productsRouter.post('/',async (req,res)=>{
         let {title,description,code,price,stock,category,thumbnails} = req.body;
     res.send(await producto.addProduct(title,description,code,price,stock,category,thumbnails)) 
+
 }
 )
 
@@ -25,7 +26,6 @@ productsRouter.get('/',async(req,res)=>{
 // DELETE 
 productsRouter.delete('/',async(req,res)=>{
     let id =req.body.id;
-/* producto.deleteProduct(id) */
 res.send(await producto.deleteProduct(id))
 })
 

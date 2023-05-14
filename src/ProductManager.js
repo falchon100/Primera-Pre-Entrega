@@ -3,7 +3,7 @@ import fs from 'fs'
 export default class ProductManager{
     constructor(){
     this.products = [];
-    this.path="./DesafioClase2.txt";
+    this.path="./products.json";
     this.idNumber=[];
     }
 
@@ -36,16 +36,15 @@ async readProducts (){
                 this.products.push(nuevoProducto)
                 await fs.promises.writeFile(this.path,JSON.stringify(this.products))
                 this.idNumber=[]
-                return'Se agrego correctamente su producto'
+                return {status:'Exitoso!',msg:'Se agrego correctamente su producto'} ;
             }else{
                 if (producto.find(ele=>ele.code==code)){
-           return `\n No se pudo agrega el producto,ya que el codigo "${code}" ya ha sido ingresado`}
+                return {status:'Fallido',msg:`No se pudo agregar el producto,ya que el codigo '${code}' ya ha sido ingresado`}}
                 else{
                     producto.push(nuevoProducto)
-                    console.log(producto);
                     await fs.promises.writeFile(this.path,JSON.stringify(producto))
                     this.idNumber=[]
-                    return'Se agrego correctamente su producto'
+                    return {status:'Exitoso!',msg:'Se agrego correctamente su producto'};
                 }
             }
         }
@@ -64,7 +63,7 @@ async readProducts (){
 //Metodo para Mostrar los productos actuales
    async getProducts(){
     let producto = await this.readProducts()
-    return console.log(producto);
+    return  producto;
     }
 
 // Busco en el array de productos si hay un producto con esa id y lo devuelvo o sino Not Found
@@ -72,9 +71,7 @@ async  getProductById(id){
     let producto = await this.readProducts()
     let productoEncontrado = producto.find(elem=>elem.id == id)
        if (productoEncontrado){
-        console.log("\n --------------El producto encontrado es :------------");
-        console.log(productoEncontrado);
-        return productoEncontrado
+        return {status: "Exitoso", productoEncontrado};
        }else{
        return {status: "No se encontro el producto"};
        }
@@ -96,24 +93,23 @@ async  getProductById(id){
     await fs.promises.writeFile(this.path, JSON.stringify(productOld))
     return {status:'producto actualizado'};
     }else{
-        return 'no existe'
+        return {status:'No existe el producto a actualizar'};
     }
     }
 
    async deleteProduct(id){
-    //Leo el archivo y el objeto lo guardo en productoEncontrado
     let producto= await fs.promises.readFile(this.path,"utf-8")
     let productoEncontrados = JSON.parse(producto)
-    //recorro el array de productos y si encuentro uno con el mismo id , lo borro y muestro el indice que borre
-    productoEncontrados.forEach((elemento,index)=>{
-        if(elemento.id==id){
-            productoEncontrados.splice(index,1)
-        }else{
-            return{status:'Negado',payload:`no se ha encontrado`}
-        }
-     })
-     //Envio el array de productos actualizados al archivo
-   await fs.promises.writeFile(this.path,JSON.stringify(productoEncontrados))
-   return {status :'exitoso'}
+let index= productoEncontrados.findIndex(prod=>prod.id==id);
+ if (index!= -1){
+    productoEncontrados.splice(index,1)
+    await fs.promises.writeFile(this.path,JSON.stringify(productoEncontrados))
+    return{status:'Exitoso',payload:`el producto '${id}' se borro correctamente`}
+ }else{
+    return {status:'Fallido',payload:`el producto  '${id}'  no se encontro`}
+ }
+
+
 }
+
 }
