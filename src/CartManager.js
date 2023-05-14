@@ -43,15 +43,17 @@ export default class CartManager{
         }  
 
 
-    async addProductToCart(cid,pid){
-    //VERIFICO SI EXISTE EL PRODUCTO
-/*         let producto =await  productAll.readProducts()
-        let indiceProd = producto.findIndex(prod=>prod.id==pid)
-        if (indiceProd==-1){
-            return {status:'no existe ese producto'}
-        } */
 
-        //VERIFICO SI EXISTE EL CARRITO
+    async addProductToCart(cid,pid){
+        
+        // VALIDO SI EXISTE PRODUCTO
+        let products = await productAll.readProducts()
+        let existe  = products.some(prod =>prod.id ==pid)
+         if (!existe){
+            return {status:'no existe ese producto'}
+         }
+        
+         // VALIDO SI EXISTE CARRITO 
     let carritos = await this.readCarts()
     let index = carritos.findIndex(cart =>cart.id== cid)
     if (index ==-1){
@@ -59,7 +61,6 @@ export default class CartManager{
     }
 
     if (carritos[index].products.some(prod=>prod.id==pid)){
-        console.log(carritos[index].products[0].quantity);
         let variable = carritos[index].products.findIndex(prod=>prod.id == pid)
         carritos[index].products[variable].quantity++
         await fs.promises.writeFile(this.path,JSON.stringify(carritos)) 
@@ -71,11 +72,7 @@ export default class CartManager{
         }
         )
     }
-    
-
     await fs.promises.writeFile(this.path,JSON.stringify(carritos))  
     return carritos[index]
 }
-
-/*  */
 }
