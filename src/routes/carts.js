@@ -23,5 +23,11 @@ cartsRouter.post('/',async(req,res)=>{
    console.log('exitoso');
 })
 
+cartsRouter.post('/:cid/product/:pid', async (req,res)=>{
+   let cartId=req.params.cid;
+   let productId= req.params.pid;
+   let respuesta= await cart.addProductToCart(cartId,productId)
+   res.send(respuesta)
+})
 
  const cart = new CartManager()
