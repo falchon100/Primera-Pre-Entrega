@@ -24,8 +24,8 @@ productsRouter.get('/',async(req,res)=>{
 
 
 // DELETE 
-productsRouter.delete('/',async(req,res)=>{
-    let id =req.body.id;
+productsRouter.delete('/:pid',async(req,res)=>{
+    let id =req.params.pid;
 res.send(await producto.deleteProduct(id))
 })
 
