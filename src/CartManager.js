@@ -54,17 +54,20 @@ export default class CartManager{
          }
         
          // VALIDO SI EXISTE CARRITO 
-    let carritos = await this.readCarts()
-    let index = carritos.findIndex(cart =>cart.id== cid)
-    if (index ==-1){
-      return {status:'no existe ese carrito'}
-    }
-
+         let carritos = await this.readCarts()
+         let index = carritos.findIndex(cart =>cart.id== cid)
+         if (index ==-1){
+          return {status:'no existe ese carrito'}
+         }
+         //BUSCO EL CARRITO CON EL INDICE OBTENIDO Y CREO UNA VARIABLE CON EL INDICE QUE TENGA EL MISMO PID 
     if (carritos[index].products.some(prod=>prod.id==pid)){
+        // si en el carrito seleccionado ya esta ese producto , busco en todos los productos su indice y lo guardo en variable 
+        //para poder acceder y sumarle uno a la cantidad 
         let variable = carritos[index].products.findIndex(prod=>prod.id == pid)
         carritos[index].products[variable].quantity++
         await fs.promises.writeFile(this.path,JSON.stringify(carritos)) 
     }
+    //si no esta el producto en el carrito seleccionado, le agrego el producto con el PID y cantidad 1
     else{
         carritos[index].products.push({
             id:pid,
